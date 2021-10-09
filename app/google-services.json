@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "85043888439",
+    "firebase_url": "https://cpu-scheduling-28a99.firebaseio.com",
+    "project_id": "cpu-scheduling-28a99",
+    "storage_bucket": "cpu-scheduling-28a99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85043888439:android:06ef1e178373b4a4bc9ab2",
+        "android_client_info": {
+          "package_name": "com.group24.concurrencyanddeadlock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85043888439-52m0h8tde8022fgi7h42dcvndm10cmeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACfuBA6AJzk0oiJ6dmsDJKl4A7wgrbOJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85043888439-52m0h8tde8022fgi7h42dcvndm10cmeo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

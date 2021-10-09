@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <color name="colorPrimary">#6200EE</color>-->
+    <color name="colorPrimary">#243B55</color>
+    <color name="Heading">#9957f7</color>
+    <!-- <color name="Button">#AA7CEC</color>-->
+    <color name="Button">#0987B9</color>
+    <color name="colorPrimaryDark">#1D3045</color>
+    <color name="colorAccent">#244C48</color>
+    <color name="radioColor">#1D2F3E</color>
+    <color name="spinnercolor">#243B55</color>
+    <color name="tableBackgeound">#FFFFFF</color>
+    <color name="TableHeading">#243B55</color>
+    <color name="EnterInput">#333333</color>
+    <color name="ComputeButton">#243B55</color>
+    <color name="OverallBackground">#f8f8f8</color>
+    <color name="borderTable">#1A000000</color>
+    <color name="SplashStatusBar">#243B55</color>
+    <color name="table_header">#e6e6e6</color>
+    <color name="bg_dashboard" alpha="1">#244C48</color>
+    // Top header #06A458
+    // Button green header #15C872
+    // Button blue header #0987B9
+    // #047A41
+    // spinner color #047A41
+</resources>
