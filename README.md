@@ -108,8 +108,8 @@ Ostrich method and Lock variable.
               section.
         4.	The value of the counting semaphore can range between 0 to N, where N is the number of the number of process
               which is free to enter and exit the critical section.
-        5.	As mentioned, a counting semaphore can allow multiple processes or threads to access the critical section, hence
-              mutual exclusion is not guaranteed.
+        5.	As mentioned, a counting semaphore can allow multiple processes or threads to access the critical section, 
+              hence mutual exclusion is not guaranteed.
         6.	Since multiple instances of process can access the shared resource at any time, counting semaphore guarantees
               bounded wait. Using such a semaphore, a process which enters the critical section has to wait for the other
               process to get inside the critical section, implying that no process will starve.
