@@ -1,7 +1,7 @@
 
 # Concurrency & Deadlock Simulator App
 
-Operating System Course Project, Team 24.
+Operating System Course Project Team 24.
 
 
 ## Authors
