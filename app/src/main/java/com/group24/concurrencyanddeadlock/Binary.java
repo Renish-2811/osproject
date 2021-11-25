@@ -4,9 +4,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -31,7 +28,7 @@ public class Binary extends AppCompatActivity {
     Button add_Row, deleteRow, reset, btn_Compute;
     TableLayout tableInput;
     TableRow tableRow;
-    TextView Process, E, B, F;
+    TextView Process, E, B, F, bsv;
     EditText proc;
     String TAG = "CHECK";
     int count = 0;
@@ -54,7 +51,7 @@ public class Binary extends AppCompatActivity {
 
         proc=findViewById(R.id.proc);
         boolean b[]=new boolean[100];
-
+        bsv=findViewById(R.id.bsv);
 
 
         tableInput.setColumnStretchable(0, true);
@@ -92,6 +89,8 @@ public class Binary extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 proc.setText("");
+                bsv.setText("Binary Semaphore Value: 1");
+                ct=0;
                 for(int j=0;j<20;j++)
                 {
                     b[j]=false;
@@ -205,12 +204,13 @@ public class Binary extends AppCompatActivity {
                             tmp2[a].setText(str);
                             Log.d(TAG, "Buffer " + a);
 
+                            bsv.setText("Binary Semaphore Value: 0");
                             tmp1[a].setText("");
 
                             lock = 0;
-                        } else //entry
+                        } else
                         {
-                            if (tmp2[a].getText().toString() == str) {
+                            if (tmp2[a].getText().toString() == str) {      //finish
 
                                 tmp3[a].setText(str);
                                 Log.d(TAG, "Finish " + a);
@@ -218,32 +218,30 @@ public class Binary extends AppCompatActivity {
                                 tmp2[a].setText("");
                                 Log.d(TAG, "Entry " + a);
 
+                                bsv.setText("Binary Semaphore Value: 1");
+
                                 lock = 1;
                                 ct++;
                                 b[a]=true;
-                            } else {
+                            } else {     // entry
                                 tmp1[a].setText(str);
                                 Log.d(TAG, "Entry " + a);
                             }
                         }
 
                     }
-                    if(ct==p)
-                    {
+                    if(ct<p) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                btn_Compute.invalidate();
+                                btn_Compute.performClick();
                             }
                         }, 500);
                     }
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            btn_Compute.performClick();
-                        }
-                    }, 500);
-
+                    else {
+                        Toast toast = Toast.makeText(Binary.this, "Simulation Completed", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
 
                 InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);

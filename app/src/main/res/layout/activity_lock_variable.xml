@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bsv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
@@ -25,37 +26,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/max"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Enter the semaphore value"
-        android:inputType="number"
-        android:textColorHint="#243B55"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/proc" />
-
     <TextView
-        android:id="@+id/csv"
+        android:id="@+id/lv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Counting Semaphore Value: "
+        android:text="State: Unlocked "
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scroll_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/max" />
+        app:layout_constraintTop_toBottomOf="@+id/proc" />
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -65,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@+id/sticky_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/csv">
+        app:layout_constraintTop_toBottomOf="@+id/lv">
 
 
         <LinearLayout
@@ -93,11 +76,11 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/table_row_top_bg"
 
+                        android:gravity="center_vertical"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:weightSum="5"
 
-                        >
+                        android:weightSum="5">
 
 
                         <TextView
@@ -136,7 +119,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_bold"
                             android:gravity="center_horizontal"
-                            android:text="BUFFER"
+                            android:text="CRITICAL\nSTATE"
                             android:textAlignment="center"
                             android:textColor="@color/TableHeading"
                             android:textSize="18sp"

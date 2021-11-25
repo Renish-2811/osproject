@@ -1,12 +1,11 @@
 package com.group24.concurrencyanddeadlock;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Counting extends AppCompatActivity {
+public class OstrichNew extends AppCompatActivity {
     Button add_Row, deleteRow, reset, btn_Compute;
     TableLayout tableInput;
     TableRow tableRow;
-    TextView Process, E, B, F, csv;
-    EditText proc, max;
+    TextView Process, E, B, F, bsv;
+    EditText proc;
     String TAG = "CHECK";
     int count = 0;
     int TABLE_ROW_ID = 0;
@@ -42,22 +42,21 @@ public class Counting extends AppCompatActivity {
     int FINISH_ID = 50000;
     int row_id;
     int ct=0;
-    int m=0;
-    int lock;
+    int lock=1;
+    int q=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_counting);
+        setContentView(R.layout.activity_ostrich_new);
         ActionBar actionBar = getSupportActionBar();
         setTitle("IMPLEMENTATION OF ALGORITHM");
         init();
 
         proc=findViewById(R.id.proc);
-        max=findViewById(R.id.max);
         boolean b[]=new boolean[100];
-        boolean dc[]=new boolean[100];
-        csv=findViewById(R.id.csv);
+        bsv=findViewById(R.id.bsv);
+
 
         tableInput.setColumnStretchable(0, true);
         tableInput.setColumnStretchable(1, true);
@@ -82,7 +81,7 @@ public class Counting extends AppCompatActivity {
                     count--;
 
                 } else {
-                    Toast toast =  Toast.makeText(Counting.this, "Min One Process Required", Toast.LENGTH_SHORT);
+                    Toast toast =  Toast.makeText(OstrichNew.this, "Min One Process Required", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     count = 1;
@@ -94,18 +93,13 @@ public class Counting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 proc.setText("");
-                max.setText("");
-                csv.setText("Counting Semaphore Value: ");
+
+                bsv.setText("State: No Deadlock");
+                q=0;
                 ct=0;
-                m=0;
                 for(int j=0;j<20;j++)
                 {
                     b[j]=false;
-                }
-
-                for(int j=0;j<20;j++)
-                {
-                    dc[j]=false;
                 }
 
                 new Handler().postDelayed(new Runnable() {
@@ -117,7 +111,7 @@ public class Counting extends AppCompatActivity {
 
 
                 if (tableInput.getChildCount() <= 2) {
-                    Toast toast=  Toast.makeText(Counting.this, "Atleast One Process Required", Toast.LENGTH_SHORT);
+                    Toast toast=  Toast.makeText(OstrichNew.this, "Atleast One Process Required", Toast.LENGTH_SHORT);
                     toast.show();
                     count = 1;
                 }
@@ -128,7 +122,7 @@ public class Counting extends AppCompatActivity {
                     }
                     count = 0;
                     setAdd_Row();
-                    Toast toast= Toast.makeText(Counting.this, "Deleted All Process \n Except One", Toast.LENGTH_SHORT);
+                    Toast toast= Toast.makeText(OstrichNew.this, "Deleted All Process \n Except One", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -145,11 +139,6 @@ public class Counting extends AppCompatActivity {
             b[j]=false;
         }
 
-        for(int j=0;j<100;j++)
-        {
-            dc[j]=false;
-        }
-
 
         btn_Compute = findViewById(R.id.btn_Compute);
 
@@ -161,7 +150,7 @@ public class Counting extends AppCompatActivity {
 
 
                 if (tableInput.getChildCount() <= 1) {
-                    Toast toast=Toast.makeText(Counting.this, "No Process Available", Toast.LENGTH_SHORT);
+                    Toast toast=Toast.makeText(OstrichNew.this, "No Process Available", Toast.LENGTH_SHORT);
 
                     toast.show();
                 }
@@ -172,24 +161,13 @@ public class Counting extends AppCompatActivity {
 
                 if (proc.getText().toString().equals("")) {
 
-                    Toast toast = Toast.makeText(Counting.this, "Input of Number of Processes Missing", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else if (max.getText().toString().equals("")) {
-
-                    Toast toast = Toast.makeText(Counting.this, "Input of Semaphore Value Missing", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(OstrichNew.this, "Input of Number of Processes Missing", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 else {
 
 
                     int p = Integer.parseInt(proc.getText().toString());
-
-                    int y = Integer.parseInt(max.getText().toString());
-
-                    lock=y-m;
-
-
                     // int arr[]=new int[p];
                     List<Integer> arr=new ArrayList<>();
                     for(int j=0;j<p;j++)
@@ -227,55 +205,111 @@ public class Counting extends AppCompatActivity {
 
                     if(b[a]==false)
                     {
-                        if (lock>0 && dc[a]==false) //buffer
+                        if (lock == 1) //buffer
                         {
                             tmp2[a].setText(str);
                             Log.d(TAG, "Buffer " + a);
 
+                            bsv.setText("State: No Deadlock");
                             tmp1[a].setText("");
 
-                            csv.setText("Counting Semaphore Value: " +(lock-1));
-
-                            if(dc[a]==false)
-                            {
-                                m++;
-                            }
-                            dc[a]=true;
-                        }
-                        else
+                            lock = 0;
+                        } else
                         {
-                            if (tmp2[a].getText().toString() == str)       //finish
-                            {
+                            if (tmp2[a].getText().toString() == str) {      //finish
 
-                                m--;
                                 tmp3[a].setText(str);
                                 Log.d(TAG, "Finish " + a);
 
                                 tmp2[a].setText("");
                                 Log.d(TAG, "Entry " + a);
 
-                                csv.setText("Counting Semaphore Value: " +(lock+1));
+                                bsv.setText("State: No Deadlock");
 
+                                lock = 1;
                                 ct++;
                                 b[a]=true;
                             }
-                            else {           //entry
-                                tmp1[a].setText(str);
-                                Log.d(TAG, "Entry " + a);
+                            else {     // entry
+                                if (tmp1[a].getText().toString() == str) {
+                                    tmp2[a].setText(str);
+                                    tmp1[a].setText("");
+
+                                    bsv.setText("State: Deadlock");
+
+                                    q=1;
+
+                                    // Create the object of
+                                    // AlertDialog Builder class
+                                    AlertDialog.Builder builder
+                                            = new AlertDialog
+                                            .Builder(OstrichNew.this);
+
+
+                                    // Set the message show for the Alert time
+                                    builder.setMessage("App Crashed due to deadlock!!!\nPlease restart the app.");
+
+                                    // Set Alert Title
+                                    builder.setTitle("WARNING!");
+
+
+                                    // Set Cancelable false
+                                    // for when the user clicks on the outside
+                                    // the Dialog Box then it will remain show
+                                    builder.setCancelable(false);
+
+                                    // Set the positive button with yes name
+                                    // OnClickListener method is use of
+                                    // DialogInterface interface.
+
+                                    builder
+                                            .setPositiveButton(
+                                                    "Restart",
+                                                    new DialogInterface
+                                                            .OnClickListener() {
+
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog,
+                                                                            int which)
+                                                        {
+
+
+                                                            // When the user click yes button
+                                                            // then app will close
+                                                            Intent intent = new Intent(OstrichNew.this, SplashScreen.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }
+                                                    });
+
+
+                                    // Create the Alert dialog
+                                    AlertDialog alertDialog = builder.create();
+
+                                    // Show the Alert Dialog box
+                                    alertDialog.show();
+                                    alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                                }
+                                else {
+                                    tmp1[a].setText(str);
+                                    Log.d(TAG, "Entry " + a);
+                                }
                             }
                         }
 
                     }
-                    if(ct<p) {
+                    if(ct<p && q==0) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 btn_Compute.performClick();
                             }
-                        }, 300);
+                        }, 500);
                     }
-                    else {
-                        Toast toast = Toast.makeText(Counting.this, "Simulation Completed", Toast.LENGTH_SHORT);
+                    else if(q==0)
+                    {
+                        Toast toast = Toast.makeText(OstrichNew.this, "Sinumation Completed\nNO DEADLOCK OCCURED", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
@@ -302,11 +336,11 @@ public class Counting extends AppCompatActivity {
     public void setAdd_Row(){
 
         int maxLength =20;
-        tableRow = new TableRow(Counting.this);
-        Process = new TextView(Counting.this);
-        E = new TextView(Counting.this);
-        B = new TextView(Counting.this);
-        F = new TextView(Counting.this);
+        tableRow = new TableRow(OstrichNew.this);
+        Process = new TextView(OstrichNew.this);
+        E = new TextView(OstrichNew.this);
+        B = new TextView(OstrichNew.this);
+        F = new TextView(OstrichNew.this);
 
 
         int idVal = count + 1;
@@ -333,13 +367,13 @@ public class Counting extends AppCompatActivity {
 
 
         Process.setId(PROCESS_NO_ID + idVal);
-        //  Process.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_process_cell_bg));
+        //  Process.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_process_cell_bg));
         E.setId(ENTRY_ID + idVal);
-        //  AT.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  AT.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_cell_bg));
         B.setId(BUFFER_ID + idVal);
-        //  MN.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  MN.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_cell_bg));
         F.setId(FINISH_ID + idVal);
-        //  MN.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  MN.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_cell_bg));
 
 
         tableRow.setId(TABLE_ROW_ID + idVal);
@@ -351,10 +385,10 @@ public class Counting extends AppCompatActivity {
         tableRow.setPadding(0,15,0,15);
         tableInput.addView(tableRow);
         if(count%2==1)
-            tableRow.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_row_bg));
+            tableRow.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_row_bg));
 
         else
-            tableRow.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_row_background_white));
+            tableRow.setBackground(ContextCompat.getDrawable(OstrichNew.this, R.drawable.table_row_background_white));
 
         Log.d(TAG, "onClick: " + Process.getId());
         Log.d(TAG, "onClick: " + E.getId());

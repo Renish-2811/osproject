@@ -25,37 +25,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/max"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Enter the semaphore value"
-        android:inputType="number"
-        android:textColorHint="#243B55"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/proc" />
-
     <TextView
-        android:id="@+id/csv"
+        android:id="@+id/bsv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Counting Semaphore Value: "
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scroll_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/max" />
+        app:layout_constraintTop_toBottomOf="@+id/proc" />
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -65,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@+id/sticky_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/csv">
+        app:layout_constraintTop_toBottomOf="@+id/bsv">
 
 
         <LinearLayout

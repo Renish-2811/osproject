@@ -3,6 +3,7 @@ package com.group24.concurrencyanddeadlock;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -34,6 +35,8 @@ public class Bankers extends AppCompatActivity {
     int ALLOCATION_ID = 30000;
     int MAXNEED_ID = 40000;
     int row_id;
+    int co=2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class Bankers extends AppCompatActivity {
         tableInput.setColumnStretchable(2, true);
         tableInput.setStretchAllColumns(true);
         setAdd_Row();
+
         add_Row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

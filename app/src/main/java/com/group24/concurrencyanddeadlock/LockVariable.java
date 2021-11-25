@@ -4,9 +4,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -27,12 +24,12 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Counting extends AppCompatActivity {
+public class LockVariable extends AppCompatActivity {
     Button add_Row, deleteRow, reset, btn_Compute;
     TableLayout tableInput;
     TableRow tableRow;
-    TextView Process, E, B, F, csv;
-    EditText proc, max;
+    TextView Process, E, B, F, lv;
+    EditText proc;
     String TAG = "CHECK";
     int count = 0;
     int TABLE_ROW_ID = 0;
@@ -42,22 +39,20 @@ public class Counting extends AppCompatActivity {
     int FINISH_ID = 50000;
     int row_id;
     int ct=0;
-    int m=0;
-    int lock;
+    int lock=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_counting);
+        setContentView(R.layout.activity_lock_variable);
         ActionBar actionBar = getSupportActionBar();
         setTitle("IMPLEMENTATION OF ALGORITHM");
         init();
 
         proc=findViewById(R.id.proc);
-        max=findViewById(R.id.max);
         boolean b[]=new boolean[100];
-        boolean dc[]=new boolean[100];
-        csv=findViewById(R.id.csv);
+        lv=findViewById(R.id.lv);
+
 
         tableInput.setColumnStretchable(0, true);
         tableInput.setColumnStretchable(1, true);
@@ -82,7 +77,7 @@ public class Counting extends AppCompatActivity {
                     count--;
 
                 } else {
-                    Toast toast =  Toast.makeText(Counting.this, "Min One Process Required", Toast.LENGTH_SHORT);
+                    Toast toast =  Toast.makeText(LockVariable.this, "Min One Process Required", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     count = 1;
@@ -94,30 +89,16 @@ public class Counting extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 proc.setText("");
-                max.setText("");
-                csv.setText("Counting Semaphore Value: ");
+                lv.setText("State: Unlocked");
                 ct=0;
-                m=0;
                 for(int j=0;j<20;j++)
                 {
                     b[j]=false;
                 }
 
-                for(int j=0;j<20;j++)
-                {
-                    dc[j]=false;
-                }
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        btn_Compute.invalidate();
-                    }
-                }, 500);
-
 
                 if (tableInput.getChildCount() <= 2) {
-                    Toast toast=  Toast.makeText(Counting.this, "Atleast One Process Required", Toast.LENGTH_SHORT);
+                    Toast toast=  Toast.makeText(LockVariable.this, "Atleast One Process Required", Toast.LENGTH_SHORT);
                     toast.show();
                     count = 1;
                 }
@@ -128,7 +109,7 @@ public class Counting extends AppCompatActivity {
                     }
                     count = 0;
                     setAdd_Row();
-                    Toast toast= Toast.makeText(Counting.this, "Deleted All Process \n Except One", Toast.LENGTH_SHORT);
+                    Toast toast= Toast.makeText(LockVariable.this, "Deleted All Process \n Except One", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -145,11 +126,6 @@ public class Counting extends AppCompatActivity {
             b[j]=false;
         }
 
-        for(int j=0;j<100;j++)
-        {
-            dc[j]=false;
-        }
-
 
         btn_Compute = findViewById(R.id.btn_Compute);
 
@@ -158,38 +134,23 @@ public class Counting extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
-
                 if (tableInput.getChildCount() <= 1) {
-                    Toast toast=Toast.makeText(Counting.this, "No Process Available", Toast.LENGTH_SHORT);
-
+                    Toast toast=Toast.makeText(LockVariable.this, "No Process Available", Toast.LENGTH_SHORT);
                     toast.show();
+
                 }
 
                 //Formation of array where the inputs will be sent to particular algorithm
 
-
-
                 if (proc.getText().toString().equals("")) {
 
-                    Toast toast = Toast.makeText(Counting.this, "Input of Number of Processes Missing", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else if (max.getText().toString().equals("")) {
-
-                    Toast toast = Toast.makeText(Counting.this, "Input of Semaphore Value Missing", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(LockVariable.this, "Input of Number of Processes Missing", Toast.LENGTH_SHORT);
                     toast.show();
                 }
                 else {
 
 
                     int p = Integer.parseInt(proc.getText().toString());
-
-                    int y = Integer.parseInt(max.getText().toString());
-
-                    lock=y-m;
-
-
                     // int arr[]=new int[p];
                     List<Integer> arr=new ArrayList<>();
                     for(int j=0;j<p;j++)
@@ -227,55 +188,48 @@ public class Counting extends AppCompatActivity {
 
                     if(b[a]==false)
                     {
-                        if (lock>0 && dc[a]==false) //buffer
+                        if (lock == 1) //buffer
                         {
                             tmp2[a].setText(str);
                             Log.d(TAG, "Buffer " + a);
 
+                            lv.setText("State: Locked");
                             tmp1[a].setText("");
 
-                            csv.setText("Counting Semaphore Value: " +(lock-1));
-
-                            if(dc[a]==false)
-                            {
-                                m++;
-                            }
-                            dc[a]=true;
-                        }
-                        else
+                            lock = 0;
+                        } else
                         {
-                            if (tmp2[a].getText().toString() == str)       //finish
-                            {
+                            if (tmp2[a].getText().toString() == str) {      //finish
 
-                                m--;
                                 tmp3[a].setText(str);
                                 Log.d(TAG, "Finish " + a);
 
                                 tmp2[a].setText("");
                                 Log.d(TAG, "Entry " + a);
 
-                                csv.setText("Counting Semaphore Value: " +(lock+1));
+                                lv.setText("State: Unlocked");
 
+                                lock = 1;
                                 ct++;
                                 b[a]=true;
-                            }
-                            else {           //entry
+                            } else {     // entry
                                 tmp1[a].setText(str);
                                 Log.d(TAG, "Entry " + a);
                             }
                         }
 
                     }
+
                     if(ct<p) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 btn_Compute.performClick();
                             }
-                        }, 300);
+                        }, 500);
                     }
                     else {
-                        Toast toast = Toast.makeText(Counting.this, "Simulation Completed", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(LockVariable.this, "Simulation Completed", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 }
@@ -301,12 +255,12 @@ public class Counting extends AppCompatActivity {
 
     public void setAdd_Row(){
 
-        int maxLength =20;
-        tableRow = new TableRow(Counting.this);
-        Process = new TextView(Counting.this);
-        E = new TextView(Counting.this);
-        B = new TextView(Counting.this);
-        F = new TextView(Counting.this);
+
+        tableRow = new TableRow(LockVariable.this);
+        Process = new TextView(LockVariable.this);
+        E = new TextView(LockVariable.this);
+        B = new TextView(LockVariable.this);
+        F = new TextView(LockVariable.this);
 
 
         int idVal = count + 1;
@@ -330,16 +284,14 @@ public class Counting extends AppCompatActivity {
         F.setTextSize(14);
 
 
-
-
         Process.setId(PROCESS_NO_ID + idVal);
-        //  Process.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_process_cell_bg));
+        //  Process.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_process_cell_bg));
         E.setId(ENTRY_ID + idVal);
-        //  AT.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  AT.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_cell_bg));
         B.setId(BUFFER_ID + idVal);
-        //  MN.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  MN.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_cell_bg));
         F.setId(FINISH_ID + idVal);
-        //  MN.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_cell_bg));
+        //  MN.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_cell_bg));
 
 
         tableRow.setId(TABLE_ROW_ID + idVal);
@@ -351,10 +303,10 @@ public class Counting extends AppCompatActivity {
         tableRow.setPadding(0,15,0,15);
         tableInput.addView(tableRow);
         if(count%2==1)
-            tableRow.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_row_bg));
+            tableRow.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_row_bg));
 
         else
-            tableRow.setBackground(ContextCompat.getDrawable(Counting.this, R.drawable.table_row_background_white));
+            tableRow.setBackground(ContextCompat.getDrawable(LockVariable.this, R.drawable.table_row_background_white));
 
         Log.d(TAG, "onClick: " + Process.getId());
         Log.d(TAG, "onClick: " + E.getId());

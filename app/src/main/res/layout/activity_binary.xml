@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:ems="10"
@@ -25,6 +25,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/bsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Binary Semaphore Value: 1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/scroll_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/proc" />
+
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="0dp"
@@ -33,13 +49,12 @@
         app:layout_constraintBottom_toTopOf="@+id/sticky_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/proc">
+        app:layout_constraintTop_toBottomOf="@+id/bsv">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
             android:orientation="vertical">
 
 
@@ -231,6 +246,7 @@
             android:text="Compute"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            android:textStyle="normal" />
+            android:textStyle="normal"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

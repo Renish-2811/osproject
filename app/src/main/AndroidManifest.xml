@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Counting"></activity>
+        <activity android:name=".OstrichNew"></activity>
+        <activity android:name=".Ostrich" />
+        <activity android:name=".LockVariable" />
+        <activity android:name=".Counting" />
         <activity android:name=".Binary" />
         <activity android:name=".Bankers" />
         <activity android:name=".AlgosActivity" />
